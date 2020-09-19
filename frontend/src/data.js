@@ -1,0 +1,43 @@
+export default {
+    products: [{
+        _id: '1',
+        name: 'Slim Shirt',
+        category: 'Shirt',
+        image: '/images/d1.jpg',
+        price: 50,
+        brand: 'Nike',
+        rating: 4.5,
+        numReviews: 10,
+    },
+    {
+        _id: '2',
+        name: 'Slim Shirt',
+        category: 'Shirt',
+        image: '/images/d2.jpg',
+        price: 50,
+        brand: 'Adiddas',
+        rating: 5.0,
+        numReviews: 12,
+    },
+    {
+        _id: '3',
+        name: 'Fit Shirt',
+        category: 'Shirt',
+        image: '/images/d3.jpg',
+        price: 50,
+        brand: 'Puma',
+        rating: 4,
+        numReviews: 9,
+    },
+    {
+        _id: '4',
+        name: 'Pant',
+        category: 'Pant',
+        image: '/images/p1.jpg',
+        price: 60,
+        brand: 'Docker',
+        rating: 4.5,
+        numReviews: 15,
+    },
+    ]
+}
