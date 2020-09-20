@@ -1,0 +1,30 @@
+{
+  "name": "amazona",
+  "version": "1.0.0",
+  "description": "Amazona online store",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --watch backend --exec babel-node backend/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eurocodes/amazona.git"
+  },
+  "author": "Ugochukwu Umeoke",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eurocodes/amazona/issues"
+  },
+  "homepage": "https://github.com/eurocodes/amazona#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
+    "@babel/node": "^7.10.5",
+    "@babel/preset-env": "^7.11.5",
+    "nodemon": "^2.0.4"
+  }
+}
