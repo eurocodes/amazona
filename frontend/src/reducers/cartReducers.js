@@ -10,13 +10,11 @@ function cartReducer(state = { cartItems: [] }, action) {
             } else {
                 return { cartItems: [...state.cartItems, item] }
             }
-            break;
 
         case REMOVE_FROM_CART:
             return { cartItems: state.cartItems.filter(item => item.product !== action.payload) }
         default:
             return state
-            break;
     }
 }
 
