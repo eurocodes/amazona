@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Axios from 'axios';
 import { deleteProduct, listProducts, saveProduct } from '../actions/productActions';
 
 function AddProductScreen(props) {
@@ -13,6 +14,7 @@ function AddProductScreen(props) {
     const [category, setCategory] = useState('');
     const [countInStock, setCountInStock] = useState('')
     const [description, setDescription] = useState('');
+    const [uploading, setUploading] = useState(false);
 
     const productList = useSelector(state => state.productList)
     const { loading, products, error } = productList;
@@ -59,6 +61,28 @@ function AddProductScreen(props) {
         dispatch(deleteProduct(product._id));
     }
 
+    const uploadFileHandler = (e) => {
+        const file = e.target.files[0];
+        console.log("File Data:", file);
+        const bodyFormData = new FormData();
+        bodyFormData.append("image", file);
+        setUploading(true);
+        console.log("Form Data:", bodyFormData);
+        Axios.post("/api/uploads/s3", bodyFormData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+        })
+            .then(response => {
+                setImage(response.data);
+                setUploading(false);
+            })
+            .catch(err => {
+                console.log(err);
+                setUploading(false);
+            });
+    };
+
     return (
         <div className="content content-margined">
             <div className="product-header">
@@ -93,6 +117,8 @@ function AddProductScreen(props) {
                                     Image
                         </label>
                                 <input type="text" name="image" id="image" value={image} onChange={e => setImage(e.target.value)}></input>
+                                <input type="file" onChange={uploadFileHandler}></input>
+                                {uploading && <div>Uploading...</div>}
                             </li>
                             <li>
                                 <label htmlFor="price">
