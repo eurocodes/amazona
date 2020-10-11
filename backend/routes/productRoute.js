@@ -5,7 +5,22 @@ import { getToken, isAdmin, isAuth } from '../utils';
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-    const products = await Product.find({});
+    const category = req.query.category ? { category: req.query.category } : {};
+    const searchKeyword = req.query.searchKeyword
+        ? {
+            name: {
+                $regex: req.query.searchKeyword,
+                $options: "i",
+            },
+        }
+        : {};
+    const sortOrder = req.query.sortOrder
+        ? req.query.sortOrder === "lowest"
+            ? { price: 1 }
+            : { price: -1 }
+        : { _id: -1 };
+    const products = await Product.find({ ...category, ...searchKeyword }).sort(sortOrder);
+    // const products = await Product.find({});
     res.send(products);
 });
 
@@ -73,5 +88,28 @@ router.delete("/:id", isAuth, isAdmin, async (req, res) => {
     }
     return res.send({ message: "Error in deletind item" })
 })
+
+router.post('/:id/reviews', isAuth, async (req, res) => {
+    const product = await Product.findById(req.params.id);
+    if (product) {
+        const review = {
+            name: req.body.name,
+            rating: Number(req.body.rating),
+            comment: req.body.comment,
+        };
+        product.reviews.push(review);
+        product.numReviews = product.reviews.length;
+        product.rating =
+            product.reviews.reduce((a, c) => c.rating + a, 0) /
+            product.reviews.length;
+        const updatedProduct = await product.save();
+        res.status(201).send({
+            data: updatedProduct.reviews[updatedProduct.reviews.length - 1],
+            message: 'Review saved successfully.',
+        });
+    } else {
+        res.status(404).send({ message: 'Product Not Found' });
+    }
+});
 
 export default router;
